@@ -1,10 +1,13 @@
 import React from 'react';
-import { Text } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
-import SymbolNotFound from '../SymbolNotFound';
-import { useGetSymbolSearchResults } from 'AppV2/Hooks/useGetSymbolSearchResults';
+
 import { observer } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
+import { Text } from '@deriv-com/quill-ui';
+
+import { useGetSymbolSearchResults } from 'AppV2/Hooks/useGetSymbolSearchResults';
+
 import MarketCategoryItem from '../MarketCategoryItem';
+import SymbolNotFound from '../SymbolNotFound';
 
 type TSymbolSearchResults = {
     searchValue: string;

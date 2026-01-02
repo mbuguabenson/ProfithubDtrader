@@ -1,8 +1,10 @@
 /* eslint @typescript-eslint/triple-slash-reference: "off" */
-/// <reference path="../../../@types/@contentpass/zxcvbn/contentpass-zxcvbn-config.d.ts" />
-import classNames from 'classnames';
+/// <reference path="../../../@types/contentpass__zxcvbn/index.d.ts" />
 import React from 'react';
+import classNames from 'classnames';
+
 import { useIsMounted } from '@deriv/shared';
+
 import Field from '../field';
 import Loading from '../loading';
 

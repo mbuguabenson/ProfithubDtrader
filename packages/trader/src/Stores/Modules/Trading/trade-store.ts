@@ -1,62 +1,6 @@
-import * as Symbol from './Actions/symbol';
-import {
-    WS,
-    ChartBarrierStore,
-    cloneObject,
-    convertDurationLimit,
-    extractInfoFromShortcode,
-    findFirstOpenMarket,
-    getBarrierPipSize,
-    getMinPayout,
-    getPlatformSettings,
-    getPropertyValue,
-    getContractSubtype,
-    getTradeNotificationMessage,
-    isBarrierSupported,
-    isAccumulatorContract,
-    isCryptocurrency,
-    isEmptyObject,
-    isMarketClosed,
-    isMultiplierContract,
-    isTurbosContract,
-    isVanillaFxContract,
-    isVanillaContract,
-    pickDefaultSymbol,
-    resetEndTimeOnVolatilityIndices,
-    setLimitOrderBarriers,
-    showDigitalOptionsUnavailableError,
-    showUnavailableLocationError,
-    getCurrencyDisplayCode,
-    BARRIER_COLORS,
-    TRADE_TYPES,
-    hasBarrier,
-    isHighLow,
-    CONTRACT_TYPES,
-    setTradeURLParams,
-    getTradeURLParams,
-    isTouchContract,
-    getCardLabelsV2,
-    formatMoney,
-    getContractPath,
-    routes,
-    cacheTrackEvents,
-    isDtraderV2DesktopEnabled,
-    isDtraderV2MobileEnabled,
-} from '@deriv/shared';
-import type { TEvents } from '@deriv-com/analytics';
-import { localize } from '@deriv/translations';
-import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
-import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
-import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
-import ServerTime from '_common/base/server_time';
-import { processPurchase } from './Actions/purchase';
-import { getUpdatedTicksHistoryStats } from './Helpers/accumulator';
-import { processTradeParams } from './Helpers/process';
-import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS, when } from 'mobx';
-import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
-import BaseStore from '../../base-store';
-import { TContractTypesList, TRootStore, TTextValueNumber, TTextValueStrings } from 'Types';
 import debounce from 'lodash.debounce';
+import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS, when } from 'mobx';
+
 import {
     ActiveSymbols,
     ActiveSymbolsRequest,
@@ -66,15 +10,78 @@ import {
     PriceProposalRequest,
     PriceProposalResponse,
     ServerTimeRequest,
-    TickSpotData,
     TicksHistoryRequest,
     TicksHistoryResponse,
+    TickSpotData,
     TicksStreamResponse,
     TradingTimesRequest,
 } from '@deriv/api-types';
-import { STATE_TYPES, TPayload, getChartAnalyticsData } from './Helpers/chart';
+import {
+    BARRIER_COLORS,
+    cacheTrackEvents,
+    ChartBarrierStore,
+    cloneObject,
+    CONTRACT_TYPES,
+    convertDurationLimit,
+    extractInfoFromShortcode,
+    findFirstOpenMarket,
+    formatMoney,
+    getBarrierPipSize,
+    getCardLabelsV2,
+    getContractPath,
+    getContractSubtype,
+    getCurrencyDisplayCode,
+    getMinPayout,
+    getPlatformSettings,
+    getPropertyValue,
+    getTradeNotificationMessage,
+    getTradeURLParams,
+    hasBarrier,
+    isAccumulatorContract,
+    isBarrierSupported,
+    isCryptocurrency,
+    isDtraderV2DesktopEnabled,
+    isDtraderV2MobileEnabled,
+    isEmptyObject,
+    isHighLow,
+    isMarketClosed,
+    isMultiplierContract,
+    isTouchContract,
+    isTurbosContract,
+    isVanillaContract,
+    isVanillaFxContract,
+    pickDefaultSymbol,
+    resetEndTimeOnVolatilityIndices,
+    routes,
+    setLimitOrderBarriers,
+    setTradeURLParams,
+    showDigitalOptionsUnavailableError,
+    showUnavailableLocationError,
+    TRADE_TYPES,
+    WS,
+} from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { safeParse } from '@deriv/utils';
+import type { TEvents } from '@deriv-com/analytics';
+
+import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
+import { getMultiplierValidationRules, getValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
+import { TContractTypesList, TRootStore, TTextValueNumber, TTextValueStrings } from 'Types';
+
 import { sendDtraderPurchaseToAnalytics } from '../../../Analytics';
+import BaseStore from '../../base-store';
+
+import { processPurchase } from './Actions/purchase';
+import * as Symbol from './Actions/symbol';
+import { getUpdatedTicksHistoryStats } from './Helpers/accumulator';
+import { getChartAnalyticsData, STATE_TYPES, TPayload } from './Helpers/chart';
+import { processTradeParams } from './Helpers/process';
+import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
+import AutoTradeStore from './autotrade-store';
+import TickHistoryStore from './tick-history-store';
+
+import ServerTime from '_common/base/server_time';
 
 type TBarriers = Array<
     ChartBarrierStore & {
@@ -355,6 +362,8 @@ export default class TradeStore extends BaseStore {
     is_initial_barrier_applied = false;
     is_digits_widget_active = false;
     should_skip_prepost_lifecycle = false;
+    tick_history_store: TickHistoryStore;
+    autotrade_store: AutoTradeStore;
     constructor({ root_store }: { root_store: TRootStore }) {
         const local_storage_properties = [
             'amount',
@@ -394,6 +403,9 @@ export default class TradeStore extends BaseStore {
             store_name,
             validation_rules: getValidationRules(),
         });
+
+        this.tick_history_store = new TickHistoryStore();
+        this.autotrade_store = new AutoTradeStore(root_store);
 
         makeObservable(this, {
             accumulator_range_list: observable,
@@ -1427,6 +1439,7 @@ export default class TradeStore extends BaseStore {
             }
             this.debouncedProposal();
         }
+        this.setTradeStatus(true);
     }
 
     get is_dtrader_v2_mobile() {

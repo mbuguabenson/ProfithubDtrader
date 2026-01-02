@@ -27,8 +27,10 @@ const Routes: React.FC = observer(() => {
                 <RouteWithSubroutes
                     path={routes.traders_hub}
                     exact
-                    component={show_logged_in_version ? TradersHub : TradersHubLoggedOut}
-                    getTitle={() => (show_logged_in_version ? title_TH : title_TH_logged_out)}
+                    component={() => {
+                        window.location.replace(routes.trade);
+                        return null;
+                    }}
                 />
                 <RouteWithSubroutes
                     path={routes.onboarding}

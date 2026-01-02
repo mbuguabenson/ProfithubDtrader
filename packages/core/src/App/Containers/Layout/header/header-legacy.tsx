@@ -21,6 +21,13 @@ import DerivShortLogo from './deriv-short-logo';
 import HeaderAccountActions from './header-account-actions';
 import TradersHubHomeButton from './traders-hub-home-button';
 
+const ProfitHubLogo = () => (
+    <div className='profithub-logo' onClick={() => (window.location.href = routes.trade)}>
+        <span className='profithub-logo__icon'>💰</span>
+        <span className='profithub-logo__text'>ProfitHub</span>
+    </div>
+);
+
 const HeaderLegacy = observer(() => {
     const { client, common, ui, notifications, traders_hub } = useStore();
     const {
@@ -127,9 +134,7 @@ const HeaderLegacy = observer(() => {
                 <div className='header__menu-left'>
                     {isDesktop ? (
                         <React.Fragment>
-                            <DerivShortLogo />
-                            <div className='header__divider' />
-                            <TradersHubHomeButton />
+                            <ProfitHubLogo />
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
@@ -138,12 +143,12 @@ const HeaderLegacy = observer(() => {
                                     <ToggleMenuDrawerAccountsOS
                                         platform_config={filterPlatformsForClients(platform_config)}
                                     />
-                                    <DerivShortLogo />
+                                    <ProfitHubLogo />
                                 </>
                             ) : (
                                 <>
                                     <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
-                                    <DerivShortLogo />
+                                    <ProfitHubLogo />
                                     {header_extension && is_logged_in && (
                                         <div className='header__menu-left-extensions'>{header_extension}</div>
                                     )}

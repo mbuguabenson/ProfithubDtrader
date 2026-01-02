@@ -1,8 +1,12 @@
 import React from 'react';
-import MarketCategoryItem from '../MarketCategoryItem';
-import { useGetFavoriteSymbols } from 'AppV2/Hooks/useGetFavoriteSymbols';
-import NoFavoriteSymbols from './no-favorite-symbols';
+
 import { observer } from '@deriv/stores';
+
+import { useGetFavoriteSymbols } from 'AppV2/Hooks/useGetFavoriteSymbols';
+
+import MarketCategoryItem from '../MarketCategoryItem';
+
+import NoFavoriteSymbols from './no-favorite-symbols';
 
 type TFavoriteSymbols = {
     selectedSymbol: string;

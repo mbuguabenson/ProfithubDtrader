@@ -1,6 +1,9 @@
 import React from 'react';
+
 import { Popover } from '@deriv/components';
+
 import { getTermDefinition } from 'AppV2/Utils/contract-description-utils';
+
 import './definition-popover.scss';
 
 type TDefinitionPopoverProps = {

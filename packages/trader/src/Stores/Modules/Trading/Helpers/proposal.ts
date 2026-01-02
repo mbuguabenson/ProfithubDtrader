@@ -9,6 +9,7 @@ import {
     toMoment,
     TRADE_TYPES,
 } from '@deriv/shared';
+
 import { TError, TTradeStore } from 'Types';
 
 type TObjContractBasis = {

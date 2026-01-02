@@ -3,15 +3,16 @@
     "compilerOptions": {
         "outDir": "./lib",
         "baseUrl": "./",
+        "typeRoots": ["./@types", "../../node_modules/@types"],
         "paths": {
-            "@deriv/*": ["../*/src"]
-        },
-        "typeRoots": ["./types", "@types"]
+            "@deriv/*": ["../*/src"],
+            "@contentpass/zxcvbn": ["./@types/contentpass__zxcvbn/index.d.ts"],
+            "react-div-100vh": ["./@types/react-div-100vh/index.d.ts"],
+            "react-drag-drawer": ["./@types/react-drag-drawer/index.d.ts"]
+        }
     },
     "include": [
         "src",
-        "./@types/react-div-100vh/react-div-100vh-config.d.ts",
-        "./@types/@enykeev/react-virtualized/dist/es/AutoSizer.d.ts",
-        "./@types/react-drag-drawer/react-drag-drawer-config.d.ts"
+        "./@types/**/*.d.ts"
     ]
 }

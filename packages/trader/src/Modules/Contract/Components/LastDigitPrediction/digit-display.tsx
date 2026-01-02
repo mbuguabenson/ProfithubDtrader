@@ -1,13 +1,16 @@
+import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import React from 'react';
+
+import { ProposalOpenContract } from '@deriv/api-types';
 import { DesktopWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+
 import { Bounce } from 'App/Components/Animations';
+
 import Digit from './digit';
 import DigitSpot from './digit-spot';
 import LastDigitStat from './last-digit-stat';
-import { ProposalOpenContract } from '@deriv/api-types';
 
 type TDigitDisplay = Pick<React.ComponentProps<typeof DigitSpot>, 'is_lost' | 'is_won'> &
     Pick<React.ComponentProps<typeof Digit>, 'is_lost' | 'is_won'> &
@@ -24,6 +27,7 @@ type TDigitDisplay = Pick<React.ComponentProps<typeof DigitSpot>, 'is_lost' | 'i
         status: ProposalOpenContract['status'];
         stats?: number | null;
         value: number;
+        tick_count?: number;
         onLastDigitSpot?: (value: {
             spot: TDigitDisplay['latest_digit']['spot'];
             is_lost: TDigitDisplay['is_lost'];
@@ -47,12 +51,13 @@ const DigitDisplay = ({
     stats,
     value,
     onLastDigitSpot,
+    tick_count = 1000, // Default to 1000 for backward compatibility
 }: TDigitDisplay) => {
     const { digit, spot } = latest_digit;
     const is_latest = value === digit;
     const is_selected = value === barrier;
     const is_selected_winning = digit === barrier;
-    const percentage = stats ? (stats * 100) / 1000 : null;
+    const percentage = stats ? (stats * 100) / tick_count : null;
 
     React.useEffect(() => {
         if (onLastDigitSpot) {

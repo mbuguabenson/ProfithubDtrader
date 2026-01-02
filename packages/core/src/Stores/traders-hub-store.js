@@ -352,21 +352,8 @@ export default class TradersHubStore extends BaseStore {
         if (!this.root_store.client.is_landing_company_loaded) return this.available_platforms;
 
         const appstore_platforms = getAppstorePlatforms();
-        if ((this.financial_restricted_countries || this.is_eu_user) && !this.is_demo_low_risk) {
-            this.available_platforms = appstore_platforms.filter(platform =>
-                ['EU', 'All'].some(region => region === platform.availability)
-            );
-            return;
-        } else if (
-            (this.selected_region === 'Non-EU' && !this.financial_restricted_countries) ||
-            this.is_demo_low_risk
-        ) {
-            this.available_platforms = appstore_platforms.filter(platform =>
-                ['Non-EU', 'All'].some(region => region === platform.availability)
-            );
-            return;
-        }
-        this.available_platforms = appstore_platforms;
+        // Only keep DTrader (trader)
+        this.available_platforms = appstore_platforms.filter(platform => platform.name === 'trader');
     }
 
     setIsOnboardingVisited(is_visited) {

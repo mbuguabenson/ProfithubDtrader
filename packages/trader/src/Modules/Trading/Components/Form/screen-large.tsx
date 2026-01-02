@@ -1,10 +1,16 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
+
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import Fieldset from 'App/Components/Form/fieldset';
+
 import ContractType from '../../Containers/contract-type';
 import Purchase from '../../Containers/purchase';
 import TradeParams from '../../Containers/trade-params';
+
+import AutoTradeButton from './Purchase/autotrade-button';
+
+import './Purchase/autotrade.scss';
 
 type TScreenLarge = {
     is_market_closed?: boolean;
@@ -27,6 +33,7 @@ const ScreenLarge = ({ is_market_closed = false, is_trade_enabled, is_single_log
                 <TradeParams />
                 <div className='purchase-container'>
                     <Purchase is_market_closed={is_market_closed} />
+                    <AutoTradeButton />
                 </div>
             </React.Fragment>
         )}

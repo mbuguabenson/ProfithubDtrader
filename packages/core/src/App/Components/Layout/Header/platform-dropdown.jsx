@@ -134,7 +134,6 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
                         </div>
                     );
                 })}
-                <TradersHubRedirect />
             </Div100vhContainer>
         </div>
     );

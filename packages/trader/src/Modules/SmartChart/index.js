@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { getUrlBase, moduleLoader } from '@deriv/shared';
 
 let module;

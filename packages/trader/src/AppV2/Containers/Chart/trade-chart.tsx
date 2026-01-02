@@ -1,14 +1,16 @@
 import React from 'react';
+
 import { ActiveSymbols, TickSpotData } from '@deriv/api-types';
-import { useDevice } from '@deriv-com/ui';
 import { ChartBarrierStore, isAccumulatorContract } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useTraderStore } from 'Stores/useTraderStores';
+import { useDevice } from '@deriv-com/ui';
+
+import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
+import useDefaultSymbol from 'AppV2/Hooks/useDefaultSymbol';
 import { SmartChart } from 'Modules/SmartChart';
 import AccumulatorsChartElements from 'Modules/SmartChart/Components/Markers/accumulators-chart-elements';
 import ToolbarWidgets from 'Modules/SmartChart/Components/toolbar-widgets';
-import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
-import useDefaultSymbol from 'AppV2/Hooks/useDefaultSymbol';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 type TBottomWidgetsParams = {
     digits: number[];

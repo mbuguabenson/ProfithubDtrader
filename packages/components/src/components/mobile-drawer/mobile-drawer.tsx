@@ -1,15 +1,17 @@
 /* eslint @typescript-eslint/triple-slash-reference: "off" */
-/// <reference path="../../../@types/react-drag-drawer/react-drag-drawer-config.d.ts" />
-import classNames from 'classnames';
+/// <reference path="../../../@types/react-drag-drawer/index.d.ts" />
 import React from 'react';
+import classNames from 'classnames';
+
+import Icon from '../icon/icon';
+import Text from '../text/text';
+
 import Body from './mobile-drawer-body';
 import Footer from './mobile-drawer-footer';
-import SubHeader from './mobile-drawer-subheader';
 import Item from './mobile-drawer-item';
+import SubHeader from './mobile-drawer-subheader';
 import SubMenu from './mobile-drawer-submenu';
 import SubMenuSection from './mobile-drawer-submenu-section';
-import Text from '../text/text';
-import Icon from '../icon/icon';
 
 type TMobileDrawer = {
     className: string;

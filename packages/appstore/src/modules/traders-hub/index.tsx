@@ -23,7 +23,7 @@ type OrderedPlatformSectionsProps = {
 };
 
 const OrderedPlatformSections = observer(
-    ({ is_cfd_visible = true, is_options_and_multipliers_visible = true }: OrderedPlatformSectionsProps) => {
+    ({ is_cfd_visible = false, is_options_and_multipliers_visible = true }: OrderedPlatformSectionsProps) => {
         const {
             traders_hub: { selected_region, is_eu_user },
         } = useStore();
@@ -36,7 +36,6 @@ const OrderedPlatformSections = observer(
                 })}
             >
                 {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
-                {is_cfd_visible && <CFDsListing />}
             </div>
         );
     }
@@ -74,13 +73,13 @@ const TradersHub = observer(() => {
 
     React.useEffect(() => {
         if (is_eu_user) {
-            setTogglePlatformType('cfd');
+            setTogglePlatformType('options');
         }
     }, [is_eu_user, setTogglePlatformType]);
 
     React.useEffect(() => {
-        if (is_eu_user) setTogglePlatformType('cfd');
-    }, [is_eu_user, setTogglePlatformType]);
+        setTogglePlatformType('options');
+    }, [setTogglePlatformType]);
 
     React.useLayoutEffect(() => {
         startPerformanceEventTimer('option_multiplier_section_loading_time');
@@ -89,7 +88,6 @@ const TradersHub = observer(() => {
     const eu_title = is_eu_demo || is_eu_real || is_eu_user;
     const getPlatformToggleOptions = () => [
         { text: eu_title ? localize('Multipliers') : localize('Options'), value: 'options' },
-        { text: localize('CFDs'), value: 'cfd' },
     ];
     const platform_toggle_options = getPlatformToggleOptions();
     const platform_toggle_options_eu = getPlatformToggleOptions().reverse();
@@ -104,9 +102,8 @@ const TradersHub = observer(() => {
     };
     if (!is_logged_in) return null;
     if (is_single_logging_in) return <Loading is_fullscreen />;
-    const is_cfd_accounts_supported =
-        combined_cfd_mt5_accounts.length || available_dxtrade_accounts.length || available_ctrader_accounts.length;
-    const should_show_cfd_section = !!(is_mt5_allowed && is_cfd_accounts_supported);
+    const is_cfd_accounts_supported = false; // Force false
+    const should_show_cfd_section = false; // Force false
 
     const getOrderedPlatformSections = () => {
         if (should_show_cfd_section) {

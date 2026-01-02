@@ -13,8 +13,13 @@ const isTmbEnabled = async () => {
     }
 
     const storedValue = localStorage.getItem('is_tmb_enabled');
+    const is_localhost = window.location.hostname === 'localhost';
 
-    return storedValue !== null ? storedValue === 'true' : !triggerImplicitFlow && true;
+    if (storedValue !== null) {
+        return storedValue === 'true';
+    }
+
+    return !triggerImplicitFlow && !is_localhost;
 };
 
 export default isTmbEnabled;

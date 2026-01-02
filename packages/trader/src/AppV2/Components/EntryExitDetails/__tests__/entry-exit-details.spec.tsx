@@ -1,7 +1,9 @@
 import React from 'react';
+
+import { CONTRACT_TYPES, mockContractInfo, TContractInfo } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
+
 import EntryExitDetails from '../entry-exit-details';
-import { TContractInfo, mockContractInfo, CONTRACT_TYPES } from '@deriv/shared';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

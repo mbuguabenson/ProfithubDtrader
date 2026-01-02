@@ -1,10 +1,12 @@
 import React from 'react';
-import { renderHook } from '@testing-library/react-hooks';
+
+import { cloneObject, getContractCategoriesConfig, getContractTypesConfig, WS } from '@deriv/shared';
 import { mockStore } from '@deriv/stores';
-import TraderProviders from '../../../trader-providers';
-import { WS, getContractCategoriesConfig, getContractTypesConfig, cloneObject } from '@deriv/shared';
-import useContractsForCompany from '../useContractsForCompany';
 import { waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react-hooks';
+
+import TraderProviders from '../../../trader-providers';
+import useContractsForCompany from '../useContractsForCompany';
 import { invalidateDTraderCache } from '../useDtraderQuery';
 
 jest.mock('@deriv/shared', () => ({

@@ -1,7 +1,9 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import ContractTypeDialog from '../contract-type-dialog';
+
 import { useDevice } from '@deriv-com/ui';
+import { render, screen } from '@testing-library/react';
+
+import ContractTypeDialog from '../contract-type-dialog';
 
 // Mock the components that might cause issues in tests
 jest.mock('@lottiefiles/dotlottie-react', () => ({

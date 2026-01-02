@@ -1,14 +1,18 @@
 import React from 'react';
+
 import { ActiveSymbols } from '@deriv/api-types';
-import { useDevice } from '@deriv-com/ui';
 import { ChartBarrierStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
+
+import { SmartChart } from 'Modules/SmartChart';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { ChartBottomWidgets } from './chart-widgets';
+
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements';
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets';
+
+import { ChartBottomWidgets } from './chart-widgets';
 import type { TBottomWidgetsParams } from './trade';
-import { SmartChart } from 'Modules/SmartChart';
 
 type TTradeChartProps = {
     bottomWidgets?: (props: TBottomWidgetsParams) => React.ReactElement;

@@ -1,17 +1,21 @@
 import React from 'react';
+import classNames from 'classnames';
+
 import { Button, ThemedScrollbars } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { StandaloneChevronLeftRegularIcon, StandaloneChevronRightRegularIcon } from '@deriv/quill-icons';
 import { clickAndKeyEventHandler, TRADE_TYPES } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
+import { Chip, Text } from '@deriv-com/quill-ui';
+
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif';
-import { getContractTypes } from '../../../../Helpers/contract-type';
-import classNames from 'classnames';
 import { useTraderStore } from 'Stores/useTraderStores';
+
+import { getContractTypes } from '../../../../Helpers/contract-type';
 import { TContractType, TList } from '../types';
-import { Chip, Text } from '@deriv-com/quill-ui';
-import { StandaloneChevronLeftRegularIcon, StandaloneChevronRightRegularIcon } from '@deriv/quill-icons';
+
 import { useMenuNavigation } from './use-menu-navigation';
 
 type TInfo = {

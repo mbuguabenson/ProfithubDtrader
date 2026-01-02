@@ -1,7 +1,10 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+
+import { fireEvent, render, screen } from '@testing-library/react';
+
+import { getContractDescription, getTerm } from 'AppV2/Utils/contract-description-utils';
+
 import AccumulatorsTradeDescription from '../accumulators-trade-description';
-import { getTerm, getContractDescription } from 'AppV2/Utils/contract-description-utils';
 
 jest.mock('@lottiefiles/dotlottie-react', () => ({
     DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),

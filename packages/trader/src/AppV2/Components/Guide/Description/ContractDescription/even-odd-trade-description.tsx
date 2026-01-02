@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { Localize } from '@deriv/translations';
-import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
+
 import { getContractDescription, getTerm } from 'AppV2/Utils/contract-description-utils';
+import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 
 const EvenOddTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const { EXPIRY, EXIT_SPOT, PAYOUT } = getTerm();

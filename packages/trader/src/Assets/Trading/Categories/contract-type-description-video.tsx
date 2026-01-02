@@ -1,8 +1,11 @@
 import React from 'react';
+
 import { VideoPlayer } from '@deriv/components';
 import { useStore } from '@deriv/stores';
-import { getDescriptionVideoId } from 'Modules/Trading/Helpers/video-config';
+
 import VideoPreview from 'AppV2/Components/Guide/Description/video-preview';
+import { getDescriptionVideoId } from 'Modules/Trading/Helpers/video-config';
+
 import './contract-type-description-video.scss';
 
 type TContractTypeDescriptionVideo = {

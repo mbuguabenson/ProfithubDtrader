@@ -1,14 +1,17 @@
-import React, { useState, useEffect, forwardRef, Ref } from 'react';
-import { Tag, Text, useSnackbar } from '@deriv-com/quill-ui';
-import { StandaloneStarFillIcon, StandaloneStarRegularIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv/translations';
-import SymbolIconsMapper from '../SymbolIconsMapper/symbol-icons-mapper';
-import { ActiveSymbols } from '@deriv/api-types';
+import React, { forwardRef, Ref, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { observer } from '@deriv/stores';
-import { useTraderStore } from 'Stores/useTraderStores';
-import { useModulesStore } from 'Stores/useModulesStores';
+
+import { ActiveSymbols } from '@deriv/api-types';
+import { StandaloneStarFillIcon, StandaloneStarRegularIcon } from '@deriv/quill-icons';
 import { clickAndKeyEventHandler } from '@deriv/shared';
+import { observer } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
+import { Tag, Text, useSnackbar } from '@deriv-com/quill-ui';
+
+import { useModulesStore } from 'Stores/useModulesStores';
+import { useTraderStore } from 'Stores/useTraderStores';
+
+import SymbolIconsMapper from '../SymbolIconsMapper/symbol-icons-mapper';
 
 type TMarketCategoryItem = {
     item: ActiveSymbols[0];

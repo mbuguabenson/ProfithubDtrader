@@ -12,7 +12,7 @@ import {
     useP2PSettings,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
-import { getDomainUrl, getOSNameWithUAParser, getStaticUrl, routes } from '@deriv/shared';
+import { getOSNameWithUAParser, getStaticUrl, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -94,8 +94,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         p2p_settings,
     } = useP2PSettings();
 
-    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
-
     React.useEffect(() => {
         if (isSuccess && !isSubscribed && is_authorize) {
             subscribe();
@@ -164,7 +162,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             // Add a small delay to ensure state is updated before navigation because adding await doesn't work here
             await new Promise(resolve => setTimeout(resolve, 0));
         }
-        history.push(routes.traders_hub);
+        history.push(routes.trade);
         await logoutClient();
     }, [history, logoutClient, toggleDrawer]);
 
@@ -325,21 +323,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         );
     };
 
-    const handleTradershubRedirect = () => {
-        if (isHubRedirectionEnabled && has_wallet) {
-            const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
-            const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
-            const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
-
-            const url_query_string = window.location.search;
-            const url_params = new URLSearchParams(url_query_string);
-            const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
-
-            return `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${account_currency ? `&account=${account_currency}` : ''}`;
-        }
-        return routes.traders_hub;
-    };
-
     return (
         <React.Fragment>
             <a id='dt_mobile_drawer_toggle' onClick={toggleDrawer} className='header__mobile-drawer-toggle'>
@@ -386,32 +369,13 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 <div className='header__menu-mobile-platform-switcher' id='mobile_platform_switcher' />
                                 <MobileDrawer.Item>
                                     <MenuLink
-                                        link_to={getStaticUrl('/')}
-                                        icon='IcDerivShortLogo'
-                                        text='Deriv.com'
+                                        link_to={routes.trade}
+                                        icon='IcTrade'
+                                        text={localize('Trade')}
                                         onClickLink={toggleDrawer}
+                                        is_active={route === routes.trade}
                                     />
                                 </MobileDrawer.Item>
-                                <MobileDrawer.Item>
-                                    <MenuLink
-                                        link_to={handleTradershubRedirect()}
-                                        icon={'IcAppstoreTradersHubHome'}
-                                        text={localize("Trader's Hub")}
-                                        onClickLink={toggleDrawer}
-                                        is_active={route === routes.traders_hub}
-                                    />
-                                </MobileDrawer.Item>
-                                {route !== routes.traders_hub && (
-                                    <MobileDrawer.Item>
-                                        <MenuLink
-                                            link_to={routes.trade}
-                                            icon='IcTrade'
-                                            text={localize('Trade')}
-                                            onClickLink={toggleDrawer}
-                                            is_active={route === routes.trade}
-                                        />
-                                    </MobileDrawer.Item>
-                                )}
                                 {primary_routes_config.map((route_config, idx) =>
                                     getRoutesWithSubMenu(route_config, idx)
                                 )}

@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import sortSymbols from 'AppV2/Utils/sort-symbols-utils';
 

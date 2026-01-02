@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Localize } from '@deriv/translations';
+
 import { getContractDescription, getTerm } from 'AppV2/Utils/contract-description-utils';
 
 const TouchNoTouchTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {

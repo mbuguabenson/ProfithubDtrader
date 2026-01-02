@@ -1,10 +1,13 @@
-import React, { useRef, useEffect } from 'react';
-import { MarketGroup } from 'AppV2/Utils/symbol-categories-utils';
-import { Tab, Text, CaptionText } from '@deriv-com/quill-ui';
-import MarketCategoryItem from '../MarketCategoryItem';
+import React, { useEffect, useRef } from 'react';
+
 import { ActiveSymbols } from '@deriv/api-types';
-import FavoriteSymbols from '../FavoriteSymbols';
 import { usePrevious } from '@deriv/components';
+import { CaptionText, Tab, Text } from '@deriv-com/quill-ui';
+
+import { MarketGroup } from 'AppV2/Utils/symbol-categories-utils';
+
+import FavoriteSymbols from '../FavoriteSymbols';
+import MarketCategoryItem from '../MarketCategoryItem';
 
 type TMarketCategory = {
     category: MarketGroup;

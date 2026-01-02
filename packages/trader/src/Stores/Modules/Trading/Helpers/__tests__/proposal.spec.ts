@@ -1,5 +1,6 @@
 import { mockStore } from '@deriv/stores';
-import { getProposalInfo, createProposalRequests } from '../proposal';
+
+import { createProposalRequests, getProposalInfo } from '../proposal';
 
 describe('Proposal', () => {
     describe('getProposalInfo function', () => {

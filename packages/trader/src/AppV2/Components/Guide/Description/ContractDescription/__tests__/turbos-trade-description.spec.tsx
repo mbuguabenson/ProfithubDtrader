@@ -1,7 +1,10 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import TurbosTradeDescription from '../turbos-trade-description';
+
+import { fireEvent, render, screen } from '@testing-library/react';
+
 import { getTerm } from 'AppV2/Utils/contract-description-utils';
+
+import TurbosTradeDescription from '../turbos-trade-description';
 
 jest.mock('@lottiefiles/dotlottie-react', () => ({
     DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),

@@ -1,10 +1,12 @@
 import React from 'react';
-import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { screen, render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { createBrowserHistory } from 'history';
+
 import { routes } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import AccountVerificationRequiredModal from '../account-verification-required-modal';
 
 type TModal = React.FC<{
@@ -99,10 +101,10 @@ describe('<AccountVerificationRequiredModal />', () => {
         const { container } = render(<AccountVerificationRequiredModal {...mocked_props} />);
         expect(container).toBeEmptyDOMElement();
     });
-    it('should navigate to proof_of_identity url on clicking on submit button', () => {
+    it('should navigate to proof_of_identity url on clicking on submit button', async () => {
         renderWithRouter(<AccountVerificationRequiredModal {...mocked_props} />);
         const submit_proof_button = screen.getByText(/submit proof/i);
-        userEvent.click(submit_proof_button);
+        await userEvent.click(submit_proof_button);
         expect(history.location.pathname).toBe(routes.proof_of_identity);
     });
 });

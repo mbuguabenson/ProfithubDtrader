@@ -1,7 +1,10 @@
 import React from 'react';
+
 import { render, screen } from '@testing-library/react';
-import VanillaTradeDescription from '../vanilla-trade-description';
+
 import { getTerm } from 'AppV2/Utils/contract-description-utils';
+
+import VanillaTradeDescription from '../vanilla-trade-description';
 
 // Mock the DotLottieReact component
 jest.mock('@lottiefiles/dotlottie-react', () => ({

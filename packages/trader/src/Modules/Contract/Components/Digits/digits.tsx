@@ -1,14 +1,18 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { toJS } from 'mobx';
-import { Popover, Text } from '@deriv/components';
+
 import { TickSpotData } from '@deriv/api-types';
-import { getMarketNamesMap, useIsMounted, isContractElapsed, TContractStore } from '@deriv/shared';
+import { Popover, Text } from '@deriv/components';
+import { getMarketNamesMap, isContractElapsed, TContractStore, useIsMounted } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { Bounce, SlideIn } from 'App/Components/Animations';
-import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';
-import { useTraderStore } from 'Stores/useTraderStores';
 import { useDevice } from '@deriv-com/ui';
+
+import { Bounce, SlideIn } from 'App/Components/Animations';
+import { useTraderStore } from 'Stores/useTraderStores';
+
+import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';
 
 type TTraderStore = ReturnType<typeof useTraderStore>;
 type TOnChangeStatus = { status: string | null | undefined; current_tick: number | null };
@@ -22,6 +26,7 @@ type TOnLastDigitSpot = {
 type TDigitsWrapper = TDigits & {
     onChangeStatus?: (params: TOnChangeStatus) => void;
     onLastDigitSpot?: (params: TOnLastDigitSpot) => void;
+    tick_count?: number;
 };
 type TDigits = Pick<TContractStore, 'contract_info' | 'digits_info'> & {
     digits_array?: number[];
@@ -115,11 +120,12 @@ const DigitsWrapper = ({
             onDigitChange={onDigitChange}
             selected_digit={selected_digit}
             onLastDigitSpot={props.onLastDigitSpot}
+            tick_count={props.tick_count}
         />
     );
 };
 
-const Digits = React.memo((props: TDigits) => {
+const Digits = observer((props: TDigits) => {
     const [status, setStatus] = React.useState<string | null>();
     const [current_tick, setCurrentTick] = React.useState<number | null>();
     const [spot, setSpot] = React.useState<string | null>();
@@ -128,6 +134,7 @@ const Digits = React.memo((props: TDigits) => {
     const [is_lost, setIsLost] = React.useState<boolean>();
     const isMounted = useIsMounted();
     const { isMobile } = useDevice();
+    const { tick_history_store } = useTraderStore();
 
     const { contract_info, digits_array, is_digit_contract, is_trade_page, underlying } = props;
 
@@ -147,8 +154,9 @@ const Digits = React.memo((props: TDigits) => {
         const underlying_name = is_trade_page ? underlying : contract_info.underlying;
         return (
             <Localize
-                i18n_default_text='Last digit stats for latest 1000 ticks for {{underlying_name}}'
+                i18n_default_text='Last digit stats for latest {{tick_count}} ticks for {{underlying_name}}'
                 values={{
+                    tick_count: tick_history_store?.tick_count || 1000,
                     underlying_name:
                         getMarketNamesMap()[
                             underlying_name?.toUpperCase() as keyof ReturnType<typeof getMarketNamesMap>
@@ -180,7 +188,12 @@ const Digits = React.memo((props: TDigits) => {
                         is_won={is_won}
                     />
                 </Bounce>
-                <DigitsWrapper {...props} onChangeStatus={onChangeStatus} onLastDigitSpot={onLastDigitSpot} />
+                <DigitsWrapper
+                    {...props}
+                    onChangeStatus={onChangeStatus}
+                    onLastDigitSpot={onLastDigitSpot}
+                    tick_count={tick_history_store?.tick_count}
+                />
             </div>
         );
     }
@@ -205,7 +218,7 @@ const Digits = React.memo((props: TDigits) => {
                     />
                 </div>
             )}
-            <DigitsWrapper {...props} />
+            <DigitsWrapper {...props} tick_count={tick_history_store?.tick_count} />
         </SlideIn>
     );
 });
